@@ -1,6 +1,6 @@
 {
 	"name" : "FindMyDevice",
-	"package_path" : "http://192.168.178.38:80/findmyphone.zip",
+	"package_path" : "/findmyphone.zip",
 	"version" : "0.1",
 	"developer" : {
         "name" : "Laurence Barnes",
