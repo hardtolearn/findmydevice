@@ -4,10 +4,10 @@
 	"package_path" : "http://s3069246.github.io/findmydevice/findmydevice.zip",
 	"version" : "0.1",
 	"icons" : {
-		"16" : "images/icons/search16x16.png",
-		"32" : "images/icons/search32x32.png",
-		"64" : "images/icons/search64x64.png",
-		"128" : "images/icons/search128x128.png"
+		"16" : "findmydevice/images/icons/search16x16.png",
+		"32" : "findmydevice/images/icons/search32x32.png",
+		"64" : "findmydevice/images/icons/search64x64.png",
+		"128" : "findmydevice/images/icons/search128x128.png"
     },
 	"developer" : {
         "name" : "Laurence Barnes",
