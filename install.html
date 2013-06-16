@@ -1,0 +1,15 @@
+<html>
+	<body>
+		<script>
+			var manifestURL = "/package.webapp";
+			var req = navigator.mozApps.installPackage(manifestURL);
+			req.onsuccess = function(){
+				alert(this.result.origin);
+			};
+			req.onerror = function(){
+				alert(this.error.name);
+			};
+		</script>
+		Install...
+	</body>
+</html>

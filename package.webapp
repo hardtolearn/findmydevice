@@ -1,0 +1,9 @@
+{
+	"name" : "FindMyDevice",
+	"package_path" : "/findmyphone.zip",
+	"version" : "0.1",
+	"developer" : {
+        "name" : "Laurence Barnes",
+        "url" : "http://laubarnes.com"
+    }
+}
