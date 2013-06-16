@@ -1,6 +1,6 @@
 {
 	"name" : "FindMyDevice",
-	"package_path" : "/findmyphone.zip",
+	"package_path" : "http://s3069246.github.io/findmydevice/findmyphone.zip",
 	"version" : "0.1",
 	"developer" : {
         "name" : "Laurence Barnes",

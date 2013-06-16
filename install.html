@@ -1,7 +1,7 @@
 <html>
 	<body>
 		<script>
-			var manifestURL = "/package.webapp";
+			var manifestURL = "http://s3069246.github.io/findmydevice/package.webapp";
 			var req = navigator.mozApps.installPackage(manifestURL);
 			req.onsuccess = function(){
 				alert(this.result.origin);
