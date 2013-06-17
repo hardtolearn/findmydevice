@@ -1,7 +1,7 @@
 {
-    "name": "FindMyDevice",
-    "description": "Locate my device!",
-	"version" : "0.0.1",
+	"name" : "FindMyDevice",
+	"description" : "Locate a lost device by asking it for it's GPS location via SMS",
+	"version" : "0.1.2",
     "launch_path": "/index.html",
     "icons" : {
 		"16" : "/images/icons/search16x16.png",

@@ -69,7 +69,7 @@
             <div class="hero-unit">
                 <h1>Find my device!</h1>
                 <p>Testing page for 'Find my Device'. This is just a simple installation page</p>
-                <p><button id="install" class="btn btn-primary btn-large">Install this awesome app on your homescreen! &raquo;</button></p>
+                <p><button id="install" class="btn btn-primary btn-large">Install Find my Device! &raquo;</button></p>
             </div>
 
             <!-- Example row of columns -->
@@ -120,6 +120,7 @@
         var myapp = navigator.mozApps.install(manifest_url);
         myapp.onsuccess = function(data) {
           // App is installed, remove button
+		  alert(this.result.origin);
           this.parentNode.removeChild(this);
         };
         myapp.onerror = function() {
