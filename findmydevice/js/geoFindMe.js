@@ -9,7 +9,7 @@ function geoFindMe() {
     var output = document.getElementById("out");
 
     var options = {
-        timeout: 5000,
+        timeout: 50000,
         maximumAge: 0
     };
 
@@ -21,16 +21,16 @@ function geoFindMe() {
     function success(position) {
         var latitude = position.coords.latitude;
         var longitude = position.coords.longitude;
-        var accuracy = position.coords.accuracy;
-        var timestamp = Date(position.timestamp);
-        var batteryLevel = batteryLife();
+    //    var accuracy = position.coords.accuracy;
+    //    var timestamp = Date(position.timestamp);
+    //    var batteryLevel = batteryLife();
 
         output.innerHTML = '<p>' +
                 'Latitude is ' + latitude + '' +
                 '<br>Longitude is ' + longitude + ' ' +
-                '<br>Accuracy is ' + accuracy + 'm ' +
-                '<br>Timestamp is ' + timestamp + ' ' +
-                '<br>Battery is ' +  batteryLevel + ' ' +
+      //          '<br>Accuracy is ' + accuracy + 'm ' +
+      //          '<br>Timestamp is ' + timestamp + ' ' +
+        //        '<br>Battery is ' +  batteryLevel + ' ' +
                 '</p>';
 
         // Get a static image of from google map
@@ -48,8 +48,9 @@ function geoFindMe() {
     }
     ;
 
-    function error() {
-        output.innerHTML = "Unable to retrieve your location";
+    function error(error) {
+		output.innerHTML = "Unable to retrieve your location: " + error.message;
+		alert('ERROR(' + error.code + '): ' + error.message);
     }
     ;
 
