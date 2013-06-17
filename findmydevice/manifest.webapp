@@ -1,7 +1,7 @@
 {
     "name": "FindMyDevice",
     "description": "Locate my device!",
-	"version" : "0.1.1",
+	"version" : "0.0.1",
     "launch_path": "/index.html",
     "icons" : {
 		"16" : "/images/icons/search16x16.png",
@@ -17,12 +17,6 @@
 	"permissions": {
 	  "geolocation":{
 	    "description": "Required for detecting user location"
-	  },
-	  "mobileconnection"{
-	    "description": "check to see you are connected to your mobile network"
-	  },  
-	  "settings"{
-	    "description": "connect to the wifi when you need to find your phone"
-	  }	  
+	  }
 	}
 }
