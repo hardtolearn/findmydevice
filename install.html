@@ -1,4 +1,10 @@
-<!-- 
+	
+<html>
+  <head>
+    <title>Find my Device - Install</title>
+  </head>
+  <body>
+ 
 		<script>
 			var manifestURL = "http://s3069246.github.io/findmydevice/findmydevice.webapp";
 			var req = navigator.mozApps.installPackage(manifestURL);
@@ -10,37 +16,7 @@
 			};
 		</script>
 		Install...
--->		
-<html>
-  <head>
-    <title>Find my Device - Install</title>
-  </head>
-  <body>
-    <p id="reminder"></p>
-    <button id="install">
-      Install this awesome app on your homescreen!
-    </button>
+
   </body>
-  <script>
-    (function(){
-      function install(ev) {
-        ev.preventDefault();
-        // define the manifest URL
-        var manifest_url = "http://s3069246.github.io/findmydevice/findmydevice.webapp";
-        // install the app
-        var myapp = navigator.mozApps.install(manifest_url);
-        myapp.onsuccess = function(data) {
-          // App is installed, remove button
-          this.parentNode.removeChild(this);
-        };
-        myapp.onerror = function() {
-          // App wasn't installed, info is in
-          alert("Error!" + installapp.error.name);
-        };
-      };
-      // get a reference to the button and call install() on click
-      var button = document.getElementById('install');
-      button.addEventListener('click', install, false);
-    })();
-  </script>
+
 </html>
