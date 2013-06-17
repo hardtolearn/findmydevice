@@ -35,16 +35,16 @@ function geoFindMe() {
 
         // Get a static image of from google map
         // https://developers.google.com/maps/documentation/staticmaps/
-        var img = new Image();
-        img.src = "http://maps.googleapis.com/maps/api/staticmap?center="
-                + latitude + "," + longitude
-                + "&zoom=13&size=300x300&markers=color:red|"
-                + latitude + "," + longitude + "&sensor=false";
+        // var img = new Image();
+        // img.src = "http://maps.googleapis.com/maps/api/staticmap?center="
+                // + latitude + "," + longitude
+                // + "&zoom=13&size=300x300&markers=color:red|"
+                // + latitude + "," + longitude + "&sensor=false";
 
         // Get the readable adddress from google
         // https://developers.google.com/maps/documentation/geocoding/#ReverseGeocoding
 
-        output.appendChild(img);
+        //output.appendChild(img);
     }
     ;
 
