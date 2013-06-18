@@ -16,5 +16,7 @@ document.getElementById("submit").addEventListener('click', function findLocatio
 	//checking browser compatibility
 	if (navigator.geolocation){
 		navigator.geolocation.getCurrentPosition(Location, error, null);//getCurrentPosition method retrieve the current geographic location of the user
+	} else {
+		alert("not finding navigation.geolocation");
 	}
 });
