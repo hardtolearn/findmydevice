@@ -12,8 +12,6 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- FF Example -->
-        <!-- <script src="js/premission.js"></script -->
-        <script src="js/geoFindMe.js"></script>
         
         <!-- Lau script -->
         <!-- <script src="js/geoLocation.js"></script> -->
@@ -25,9 +23,9 @@ and open the template in the editor.
         <h1>Find my Phone</h1>
         <br />
         
-        <p><button onclick="geoFindMe()">Show my location</button></p>
-        <div id="out"></div>
-        <br />
+    Latitude:<label id="lati"></label><br /><br />
+    Longitude:<label id="longi"></label><br /><br />
+    <input type="button" id="submit" value="Find Location" />
         
         <!--
                 
@@ -43,5 +41,10 @@ and open the template in the editor.
         
         <p><button id="getMyLocation">Get My Location</button></p>
         -->
+		
+        <script src="js/geoFindMe.js"></script>
+
     </body>
+	
+	
 </html>
