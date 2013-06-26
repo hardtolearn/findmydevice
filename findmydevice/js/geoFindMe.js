@@ -1,3 +1,10 @@
+// options for the geolocation 
+var geo_options = {
+	timeout: 27000,
+	maximumAge: 30000,
+	enableHighAccuracy: true
+};
+
 //location function is defining with parameter
 function Location(position){
 	var latitude = position.coords.latitude; //Specifies the longitude estimate in decimal degrees. The value range is [-180.00, +180.00].
@@ -15,8 +22,10 @@ function error(error) {
 document.getElementById("submit").addEventListener('click', function findLocation() {
 	//checking browser compatibility
 	if (navigator.geolocation){
-		navigator.geolocation.getCurrentPosition(Location, error, null);//getCurrentPosition method retrieve the current geographic location of the user
+		//getCurrentPosition method retrieve the current geographic location of the user
+		navigator.geolocation.getCurrentPosition(Location, error, geo_options);
 	} else {
-		alert("not finding navigation.geolocation");
+		alert("browser does not support 'navigation.geolocation'");
 	}
 });
+
