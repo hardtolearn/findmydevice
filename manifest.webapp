@@ -2,7 +2,7 @@
 	"name" : "Find My Device",
 	"version" : "0.2.0",
 	"launch_path": "/index.html",
-	"description" : "Locate a lost device by asking it for it's GPS location via SMS",
+	"description" : "Locate a lost device by asking it for it's GPS location via SMS commands",
 	"type": "certified",
 	"developer" : {
 		"name" : "Laurence Barnes",
@@ -10,15 +10,27 @@
 	},
 	"permissions": {
 		"geolocation":{
-			"description" : "Marking out user location"
+			"description" : "find the phone's location"
 		},
-		"sms":{},
-		"storage":{},
-		"contacts":{ "access": "readonly" },
-		"mobileconnection":{},
-		"settings":{ "access": "readonly" },
-		"audio-channel-notification":{},
-		"desktop-notification":{}
+		"storage":{
+			"description" : "Save to local storage"
+		},
+		"mobileconnection":{
+			"description" : "Find out information about the current mobile voice and data conection"
+		},
+		"settings":{ 
+			"access": "readwrite",
+			"description": "Turn on internet or wifi"
+		},
+		"wifi-manage": {
+			"description" : "Turn on wifi for more accurate geolocatoin reporting"
+		},
+		"audio-channel-alarm":{
+			"description" : "Sound an alarm"
+		},
+		"backgroundservice": {
+			"description" : "Allow the app to run in the background and perform task like listening to incoming messengers"
+		},
 	},
 	"icons" : {
 		"16" : "/images/icons/search16x16.png",
