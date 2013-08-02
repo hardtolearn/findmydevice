@@ -1,0 +1,51 @@
+{
+	"name" : "Find My Device",
+	"version" : "0.2.0",
+	"launch_path": "/index.html",
+	"description" : "Locate a lost device by asking it for it's GPS location via SMS",
+	"type": "certified",
+	"developer" : {
+		"name" : "Laurence Barnes",
+		"url" : "http://laubarnes.com"
+	},
+	"permissions": {
+		"geolocation":{
+			"description" : "Marking out user location"
+		},
+		"sms":{},
+		"storage":{},
+		"contacts":{ "access": "readonly" },
+		"mobileconnection":{},
+		"settings":{ "access": "readonly" },
+		"audio-channel-notification":{},
+		"desktop-notification":{}
+	},
+	"icons" : {
+		"16" : "/images/icons/search16x16.png",
+		"32" : "/images/icons/search32x32.png",
+		"64" : "/images/icons/search64x64.png",
+		"128" : "/images/icons/search128x128.png"
+	},
+	"default_locale": "en",
+	"orientation": "portrait-primary",
+	"activities": {
+		"new": {
+			"filters": {
+				"type": "websms/sms",
+					"number": {
+					"pattern":"[\\w\\s+#*().-]{0,50}"
+				}
+			},
+			"disposition": "window"
+		},
+		"share": {
+			"filters": {
+				"type": ["image/*", "audio/*", "video/*"],
+				"number": 1
+			},
+			"disposition": "window",
+			"returnValue": true
+		}
+	}
+}
+

@@ -1,0 +1,15 @@
+<div ng-controller="MainCtrl">
+<div class="hero-unit">
+  <h1>'Allo, 'Allo!</h1>
+  <h3>Location</h3> 
+  <p>Latitude: {{coords.latitude}}</p>
+  <p>Longitude: {{coords.longitude}}</p>
+  <p>Accuracy: {{coords.accuracy}}</p>
+  <h3>You now have</h3>
+  <ul>
+      <li data-ng-repeat="thing in awesomeThings">{{thing}}</li>
+  </ul>
+  <p>installed.</p>
+  <h3>Enjoy coding! - Yeoman</h3>
+</div>
+</div>
