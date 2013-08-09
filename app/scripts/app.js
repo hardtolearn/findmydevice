@@ -34,4 +34,3 @@ findDeviceApp.config(function ($routeProvider) {
       });
   });
   
-  

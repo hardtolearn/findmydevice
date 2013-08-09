@@ -1,15 +1,11 @@
-<div ng-controller="MainCtrl">
-<div class="hero-unit">
-  <h1>'Allo, 'Allo!</h1>
-  <h3>Location</h3> 
-  <p>Latitude: {{coords.latitude}}</p>
-  <p>Longitude: {{coords.longitude}}</p>
-  <p>Accuracy: {{coords.accuracy}}</p>
-  <h3>You now have</h3>
-  <ul>
-      <li data-ng-repeat="thing in awesomeThings">{{thing}}</li>
-  </ul>
-  <p>installed.</p>
-  <h3>Enjoy coding! - Yeoman</h3>
-</div>
+<div data-ng-controller="MainCtrl">
+    <div class="hero-unit">
+	<h1>'Allo, 'Allo!</h1>
+	<h3>Location</h3> 
+	<p>Latitude: {{coords.latitude}}</p>
+	<p>Longitude: {{coords.longitude}}</p>
+	<p>Accuracy: {{coords.accuracy}}</p>
+	<p><button type="submit" class="btn" data-ng-click="activateWifi()">Turn on Wifi</button></p>
+	<p><button type="submit" class="btn" data-ng-click="activateWifiSmart()">Turn on Wifi Smart Way</button></p>
+    </div>
 </div>
