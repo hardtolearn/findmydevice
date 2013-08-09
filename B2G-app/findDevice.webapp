@@ -3,7 +3,7 @@
 	"description" : "AngularJS, Locate a lost device by asking it for it's GPS location via SMS",
 	"type": "certified",
 	"version" : "0.2.0",
-	"package_path" : "http://s3069246.github.io/findmydevice/finddevice.zip",
+	"package_path" : "http://s3069246.github.io/findmydevice/B2G-app/finddevice.zip",
 	"icons" : {
 		"16" : "findmydevice/img/icons/search16x16.png",
 		"32" : "findmydevice/img/icons/search32x32.png",
