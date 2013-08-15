@@ -1,4 +1,4 @@
-// Generated on 2013-07-23 using generator-angular 0.3.0
+// Generated on 2013-08-10 using generator-angular 0.3.1
 'use strict';
 var LIVERELOAD_PORT = 35729;
 var lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT });
@@ -173,6 +173,16 @@ module.exports = function (grunt) {
         }]
       }
     },
+    svgmin: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>/images',
+          src: '{,*/}*.svg',
+          dest: '<%= yeoman.dist %>/images'
+        }]
+      }
+    },
     cssmin: {
       // By default, your `index.html` <!-- Usemin Block --> will take care of
       // minification. This option is pre-configured if you do not wish to use
@@ -219,7 +229,7 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             'bower_components/**/*',
-            'images/{,*/}*.{gif,webp,svg}',
+            'images/{,*/}*.{gif,webp}',
             'styles/fonts/*'
           ]
         }, {
@@ -242,6 +252,7 @@ module.exports = function (grunt) {
       dist: [
         'coffee',
         'imagemin',
+        'svgmin',
         'htmlmin'
       ]
     },

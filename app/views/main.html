@@ -1,11 +1,24 @@
 <div data-ng-controller="MainCtrl">
+
     <div class="hero-unit">
-	<h1>'Allo, 'Allo!</h1>
+
+	<h1>Angular! v200</h1>
+
 	<h3>Location</h3> 
-	<p>Latitude: {{coords.latitude}}</p>
-	<p>Longitude: {{coords.longitude}}</p>
-	<p>Accuracy: {{coords.accuracy}}</p>
+	<p>Latitude: {{position.coords.latitude}}</p>
+	<p>Longitude: {{position.coords.longitude}}</p>
+	<p>Accuracy: {{position.coords.accuracy}}</p>
+	<p>Time Stamp: {{position.timestamp | date:'medium'}}</p>
+	
+	
+	<p><button type="submit" class="btn" data-ng-click="wifiStatusSmart()">Check the status of Wifi</button></p>
 	<p><button type="submit" class="btn" data-ng-click="activateWifi()">Turn on Wifi</button></p>
-	<p><button type="submit" class="btn" data-ng-click="activateWifiSmart()">Turn on Wifi Smart Way</button></p>
+	<p><button type="submit" class="btn" data-ng-click="disableWifi()">Turn off Wifi</button></p>
+	<p></p>
+	<p><button type="submit" class="btn" data-ng-click="gpsStatusSmart()">Check the status of GPS</button></p>
+	<p><button type="submit" class="btn" data-ng-click="activateGPS()">Turn on GPS</button></p>
+	<p><button type="submit" class="btn" data-ng-click="disableGPS()">Turn off GPS</button></p>
+	
     </div>
+
 </div>
