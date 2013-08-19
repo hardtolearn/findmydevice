@@ -23,14 +23,14 @@
         "geolocation": {
             "description" : "Marking out user location"
         },
-		"sms":{},
-		"storage":{},
-		"contacts":{ "access": "readonly" },
-		"settings":{ 
-		    "description": "During an alert, turn on wifi, mobile internet and GPS for more accurate reporting of location.",
-		    "access": "readwrite" 
-		},
-		"audio-channel-notification":{}
+	"sms":{},
+	"storage":{},
+	"contacts":{ "access": "readonly" },
+	"settings":{ 
+	    "description": "During an alert, turn on wifi, mobile internet and GPS for more accurate reporting of location.",
+	    "access": "readwrite" 
+	},
+	"audio-channel-notification":{}
     },
     "messages": [
 	 { "sms-received": "/index.html" },

@@ -14,7 +14,7 @@ angular.module('findDeviceApp')
      'Timestamp: '             + position.timestamp                + '\n');
      });
      */
-
+/*
     var MessageManager = {
 	
 	activity: null,
@@ -42,10 +42,10 @@ angular.module('findDeviceApp')
     };
 
     MessageManager.init();
-    
+    */
     var sms = window.navigator.mozMobileMessage;
     
-    MozMobileMessageManager.onreceived = function onreceived(event) {
+    sms.onreceived = function onreceived(event) {
 	var incomingSms = event.message;
 	$window.alert(incomingSms.body);
 	$window.alert('Received SMS Message');
