@@ -31,5 +31,9 @@
 		    "access": "readwrite" 
 		},
 		"audio-channel-notification":{}
-    }
+    },
+    "messages": [
+	 { "sms-received": "/index.html" },
+	 { "notification": "/index.html" }
+      ]
 }

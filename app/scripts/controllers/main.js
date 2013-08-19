@@ -15,62 +15,98 @@ angular.module('findDeviceApp')
      });
      */
 
-
-
-
-    function smsListener() {
-	//window.addEventListener("smsreceived",
-	//                        function(m) { sms_body = m.body });
-	// https://developer.mozilla.org/en-US/docs/Web/API/window.navigator.mozMobileMessage
-	var message = window.navigator.mozMobileMessage;
-	//message.addEventListener('received', onMessageReceived(this));
-	message.addEventListener('received', function(e) {
-	    $window.alert(e.message);
-	});
-    }
-/*
-    function onMessageReceived(e) {
-	console.log(e);
-	var message = e.message;
-	$window.alert(message);
+    var MessageManager = {
 	
-	 var message = e.message;
-	 var threadId;
-	 
-	 if (message.messageClass && message.messageClass === 'class-0') {
-	 return;
-	 }
-	 
-	 // Here we can only have one sender, so deliveryStatus[0] => message
-	 // status from sender. Ignore 'pending' messages that are received
-	 // this means we are in automatic download mode
-	 if (message.delivery === 'not-downloaded' &&
-	 message.deliveryStatus[0] === 'pending') {
-	 return;
-	 }
-	 
-	 threadId = message.threadId;
-	 
-	 if (Threads.has(threadId)) {
-	 Threads.get(threadId).messages.push(message);
-	 }
-	 
-	 if (threadId === Threads.currentId) {
-	 //Append message and mark as unread
-	 this.markMessagesRead([message.id], true, function() {
-	 MessageManager.getThreads(ThreadListUI.renderThreads);
-	 });
-	 ThreadUI.appendMessage(message);
-	 ThreadUI.scrollViewToBottom();
-	 Utils.updateTimeHeaders();
-	 } else {
-	 ThreadListUI.onMessageReceived(message);
-	 }
+	activity: null,
 	
-    }
- */
+	init: function mmInit() {
+	    if (this.initialized) {
+		return;
+	    }
+	    this.initialized = true;
+	    // Allow for stubbing in environments that do not implement the
+	    // `navigator.mozMobileMessage` API
+	    this._mozMobileMessage = window.navigator.mozMobileMessage;
 
-    smsListener();
+	    this._mozMobileMessage.addEventListener('received',
+		    this.onMessageReceived.bind(this));
+
+	},
+	onMessageReceived: function mmOnMessageReceived(e) {
+	    var message = e.message;
+	    $window.alert('Received SMSmessage');
+	    $window.alert(message.body);
+	    console.log(e);
+	}
+
+    };
+
+    MessageManager.init();
+    
+    var sms = window.navigator.mozMobileMessage;
+    
+    MozMobileMessageManager.onreceived = function onreceived(event) {
+	var incomingSms = event.message;
+	$window.alert(incomingSms.body);
+	$window.alert('Received SMS Message');
+    };
+
+    /*
+     function smsListener() {
+     //window.addEventListener("smsreceived",
+     //                        function(m) { sms_body = m.body });
+     // https://developer.mozilla.org/en-US/docs/Web/API/window.navigator.mozMobileMessage
+     $window.alert('sms listener');
+     var message = window.navigator.mozMobileMessage;
+     //message.addEventListener('received', onMessageReceived(this));
+     message.addEventListener('received', function(e) {
+     $window.alert(e.message);
+     });
+     }
+     */
+    /*
+     function onMessageReceived(e) {
+     console.log(e);
+     var message = e.message;
+     $window.alert(message);
+     
+     var message = e.message;
+     var threadId;
+     
+     if (message.messageClass && message.messageClass === 'class-0') {
+     return;
+     }
+     
+     // Here we can only have one sender, so deliveryStatus[0] => message
+     // status from sender. Ignore 'pending' messages that are received
+     // this means we are in automatic download mode
+     if (message.delivery === 'not-downloaded' &&
+     message.deliveryStatus[0] === 'pending') {
+     return;
+     }
+     
+     threadId = message.threadId;
+     
+     if (Threads.has(threadId)) {
+     Threads.get(threadId).messages.push(message);
+     }
+     
+     if (threadId === Threads.currentId) {
+     //Append message and mark as unread
+     this.markMessagesRead([message.id], true, function() {
+     MessageManager.getThreads(ThreadListUI.renderThreads);
+     });
+     ThreadUI.appendMessage(message);
+     ThreadUI.scrollViewToBottom();
+     Utils.updateTimeHeaders();
+     } else {
+     ThreadListUI.onMessageReceived(message);
+     }
+     
+     }
+     */
+
+    //smsListener();
 
     geolocation.getCurrentPosition(function(position) {
 	$scope.position = position;
