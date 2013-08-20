@@ -1,107 +1,69 @@
 'use strict';
 
 angular.module('findDeviceApp')
-	.controller('MainCtrl', function($scope, $window, geolocation, deviceSettings) {
-
-/*
-    var MessageManager = {
-	
-	activity: null,
-	
-	init: function mmInit() {
-	    if (this.initialized) {
-		return;
-	    }
-	    this.initialized = true;
-	    // Allow for stubbing in environments that do not implement the
-	    // `navigator.mozMobileMessage` API
-	    this._mozMobileMessage = window.navigator.mozMobileMessage;
-
-	    this._mozMobileMessage.addEventListener('received',
-		    this.onMessageReceived.bind(this));
-
-	},
-	onMessageReceived: function mmOnMessageReceived(e) {
-	    var message = e.message;
-	    $window.alert('Received SMSmessage');
-	    $window.alert(message.body);
-	    console.log(e);
-	}
-
-    };
-
-    MessageManager.init();
-    */
-    var sms = window.navigator.mozMobileMessage;
+	.controller('MainCtrl', function($scope, $window, geolocation, deviceSettings, messageManager) {
     
-    sms.onreceived = function onreceived(event) {
-	var incomingSms = event.message;
-	$window.alert(incomingSms.body);
-	$window.alert('Received SMS Message');
-    };
+    // Testing to see if the app has access to mozMobileMessage
+    if (navigator.mozMobileMessage) {
+	console.log('has mozMobileMessage');
+    } else {
+	console.log('does not have mozMobileMessage');
+    }
 
+    // Check to see if we have premission
+    if (navigator.mozMobileMessage === 0) {
+	console.log('I have no premission');
+    } else {
+	console.log('Have premission to use mozMM');
+    }
+
+    // Create a Event Listener for incoming messages
+    var mozMM = navigator.mozMobileMessage;
+    mozMM.addEventListener('received', function addEventListener(evt) {
+	    // Display a alert when a message comes in
+	    $window.alert('SMS received');
+	    $window.alert(evt.message.body);
+    }, false);
+    
+    /* 
+	// Create a Event Listener
+	mozMM.addEventListener('received', 
+	    message.Manager.messageReceived(this), false);	
+    */
+   
     /*
-     function smsListener() {
-     //window.addEventListener("smsreceived",
-     //                        function(m) { sms_body = m.body });
-     // https://developer.mozilla.org/en-US/docs/Web/API/window.navigator.mozMobileMessage
-     $window.alert('sms listener');
-     var message = window.navigator.mozMobileMessage;
-     //message.addEventListener('received', onMessageReceived(this));
-     message.addEventListener('received', function(e) {
-     $window.alert(e.message);
-     });
-     }
+     * Load the GPS coordinates for the device
      */
-    /*
-     function onMessageReceived(e) {
-     console.log(e);
-     var message = e.message;
-     $window.alert(message);
-     
-     var message = e.message;
-     var threadId;
-     
-     if (message.messageClass && message.messageClass === 'class-0') {
-     return;
-     }
-     
-     // Here we can only have one sender, so deliveryStatus[0] => message
-     // status from sender. Ignore 'pending' messages that are received
-     // this means we are in automatic download mode
-     if (message.delivery === 'not-downloaded' &&
-     message.deliveryStatus[0] === 'pending') {
-     return;
-     }
-     
-     threadId = message.threadId;
-     
-     if (Threads.has(threadId)) {
-     Threads.get(threadId).messages.push(message);
-     }
-     
-     if (threadId === Threads.currentId) {
-     //Append message and mark as unread
-     this.markMessagesRead([message.id], true, function() {
-     MessageManager.getThreads(ThreadListUI.renderThreads);
-     });
-     ThreadUI.appendMessage(message);
-     ThreadUI.scrollViewToBottom();
-     Utils.updateTimeHeaders();
-     } else {
-     ThreadListUI.onMessageReceived(message);
-     }
-     
-     }
-     */
-
-    //smsListener();
-
     geolocation.getCurrentPosition(function(position) {
 	$scope.position = position;
     });
 
-    // Check Wifi
+    /*
+     * Send a text message
+     */
+    $scope.sendSMS = function() {
+		
+	console.log('-------------------------');
+	$window.alert('going to send a text message now');
+	
+	var num = '';
+	var message = 'Hello from the app';
+	
+	var promise = messageManager.sendMessage(num, message);
+	
+	promise.then(function(status) {
+	    console.log('SMS has been: ' + status);
+	    $window.alert('Promise: SMS has been: ' + status);
+	}, function (error){
+	    console.log('Error sending SMS: ' + error);
+	    $window.alert('Error trying to send SMS ' + error);
+	});
+
+    };
+
+    /*
+     * Check Wifi 
+     */
     $scope.wifiStatus = function() {
 	console.log('-------------------------');
 	var promise = deviceSettings.checkWifiStatus();

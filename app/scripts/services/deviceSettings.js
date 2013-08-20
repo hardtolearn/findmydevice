@@ -2,10 +2,14 @@
 
 // List of settings: https://developer.mozilla.org/en-US/docs/Mozilla/Firefox_OS/Platform/Settings_list
 // A class method to check the settings on the phone, and if they need to be activated 
-angular.module('findDeviceApp').factory('deviceSettings', function($q, $rootScope, $timeout) {
+angular.module('findDeviceApp').factory('deviceSettings', function($q, $timeout) {
 
     return {
-	// Check Wifi
+	
+	/*
+	 * An older method used to check the status of Wifi
+	 * @returns {@exp;deferred@pro;promise}
+	 */
 	checkWifiStatus: function() {
 
 	    var deferred = $q.defer();
@@ -21,11 +25,7 @@ angular.module('findDeviceApp').factory('deviceSettings', function($q, $rootScop
 		    //return setting.result['wifi.enabled'];
 		    deferred.resolve(value);
 		}, 500);
-		/*
-		 $rootScope.$apply(function() {
-		 
-		 });
-		 */
+
 	    };
 
 	    setting.onerror = function() {
@@ -36,7 +36,8 @@ angular.module('findDeviceApp').factory('deviceSettings', function($q, $rootScop
 	    return deferred.promise;
 	},
 	/*
-	 * Check Setting Status 
+	 * Check to see if a Setting is turned on or off
+	 *  
 	 * @param {type} s
 	 * @returns {@exp;deferred@pro;promise}
 	 */
@@ -65,7 +66,8 @@ angular.module('findDeviceApp').factory('deviceSettings', function($q, $rootScop
 
 	},
 	/*
-	 * Activate Wifi
+	 * Turn the Wifi on
+	 * 
 	 * @return promise 
 	 */
 	activateWifi: function(s) {
@@ -100,6 +102,7 @@ angular.module('findDeviceApp').factory('deviceSettings', function($q, $rootScop
 	 * Mainly used for testing, as once
 	 * wifi has been turned on, it is difficult to
 	 * turn it off again manually within the simulator
+	 * 
 	 * @return promise
 	 */
 	disableWifi: function(s) {
@@ -129,7 +132,8 @@ angular.module('findDeviceApp').factory('deviceSettings', function($q, $rootScop
 	    return deferred.promise;
 	},
 	/*
-	 * Activate Wifi
+	 * Turn the GPS on
+	 * 
 	 * @return promise 
 	 */
 	activateGPS: function(s) {
@@ -164,6 +168,7 @@ angular.module('findDeviceApp').factory('deviceSettings', function($q, $rootScop
 	 * Mainly used for testing, as once
 	 * wifi has been turned on, it is difficult to
 	 * turn it off again manually within the simulator
+	 * 
 	 * @return promise
 	 */
 	disableGPS: function(s) {

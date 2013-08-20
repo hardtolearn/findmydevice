@@ -1,7 +1,7 @@
 <div data-ng-controller="MainCtrl">
 
     <div class="well">
-	<h2>Find My Device! v001</h2>
+	<h2>Find My Device! v000</h2>
     </div>
     
     <h3>Location</h3> 
@@ -10,6 +10,10 @@
     <p>Longitude: {{position.coords.longitude}}</p>
     <p>Accuracy: {{position.coords.accuracy}}</p>
     <p>Time Stamp: {{position.timestamp | date:'medium'}}</p>
+    
+    <h3>Messages</h3>
+    
+    <p><button type="submit" class="btn" data-ng-click="sendSMS()">Send Message</button></p>
     
     <h3>Settings</h3>
 

@@ -17,7 +17,8 @@
     "installs_allowed_from": ["*"],
     "default_locale": "en",
     "permissions": {
-        "desktop-notification": {
+        "backgroundservice":{},
+	"desktop-notification": {
             "description" : "To show notifications"
         },
         "geolocation": {
