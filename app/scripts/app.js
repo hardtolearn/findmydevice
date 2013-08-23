@@ -1,7 +1,7 @@
 'use strict';
 
 // var findDeviceApp = angular.module('findDeviceApp', ['LocalStorageModule', 'UserValidation']);
-var findDeviceApp = angular.module('findDeviceApp', []);
+var findDeviceApp = angular.module('findDeviceApp', ['LocalStorageModule']);
 
 findDeviceApp.config(function ($routeProvider) {
     $routeProvider

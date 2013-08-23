@@ -1,29 +1,35 @@
-<div data-ng-controller="MainCtrl">
+<div>
 
-    <div class="well">
-	<h2>Find My Device! v000</h2>
+    <div class="gap"></div>
+
+    <div class="well alert-error">
+	<h3>Find My Device</h3>
     </div>
-    
-    <h3>Location</h3> 
-    
+
+    <h3>Location</h3>
+
     <p>Latitude: {{position.coords.latitude}}</p>
     <p>Longitude: {{position.coords.longitude}}</p>
     <p>Accuracy: {{position.coords.accuracy}}</p>
     <p>Time Stamp: {{position.timestamp | date:'medium'}}</p>
-    
+
     <h3>Messages</h3>
-    
+
+    <p><button type="submit" class="btn" data-ng-click="testMsg()">Test Receive Message</button></p>
     <p><button type="submit" class="btn" data-ng-click="sendSMS()">Send Message</button></p>
-    
+
     <h3>Settings</h3>
 
-    <p><button type="submit" class="btn" data-ng-click="wifiStatusSmart()">Check the status of Wifi</button></p>
-    <p><button type="submit" class="btn" data-ng-click="activateWifi()">Turn on Wifi</button></p>
-    <p><button type="submit" class="btn" data-ng-click="disableWifi()">Turn off Wifi</button></p>
-    <p></p>
-    <p><button type="submit" class="btn" data-ng-click="gpsStatusSmart()">Check the status of GPS</button></p>
-    <p><button type="submit" class="btn" data-ng-click="activateGPS()">Turn on GPS</button></p>
-    <p><button type="submit" class="btn" data-ng-click="disableGPS()">Turn off GPS</button></p>
-
+    <p><button type="submit" class="btn" data-ng-click="getSettingStatus('wifi.enabled')">Check the status of Wifi</button></p>
+    <p><button type="submit" class="btn" data-ng-click="activateSetting('wifi.enabled')">Turn on Wifi</button></p>
+    <p><button type="submit" class="btn" data-ng-click="disableSetting('wifi.enabled')">Turn off Wifi</button></p>
+    <hr />
+    <p><button type="submit" class="btn" data-ng-click="getSettingStatus('geolocation.enabled')">Check the status of GPS</button></p>
+    <p><button type="submit" class="btn" data-ng-click="activateSetting('geolocation.enabled')">Turn on GPS</button></p>
+    <p><button type="submit" class="btn" data-ng-click="disableSetting('geolocation.enabled')">Turn off GPS</button></p>
+    <hr />
+    <p><button type="submit" class="btn" data-ng-click="getSettingStatus('ril.data.enabled')">Check the status of Mobile Data</button></p>
+    <p><button type="submit" class="btn" data-ng-click="activateSetting('ril.data.enabled')">Turn on Mobile Data</button></p>
+    <p><button type="submit" class="btn" data-ng-click="disableSetting('ril.data.enabled')">Turn off Mobile Data</button></p>
 
 </div>
