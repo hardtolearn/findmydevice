@@ -2,7 +2,7 @@
 
 // List of settings: https://developer.mozilla.org/en-US/docs/Mozilla/Firefox_OS/Platform/Settings_list
 // A class method to check the settings on the phone, and if they need to be activated 
-angular.module('findDeviceApp').service('updateDeviceSetting', function($q, $timeout) {
+angular.module('findDeviceApp').factory('updateDeviceSetting', function($q, $timeout) {
 
     return {
 	/*

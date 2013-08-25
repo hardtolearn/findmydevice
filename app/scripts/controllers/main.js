@@ -2,7 +2,7 @@
 
 angular.module('findDeviceApp')
 	// geolocation
-	.controller('MainCtrl', function($rootScope, $scope, $window, updateDeviceSetting,
+	.controller('MainCtrl', function($scope, $window, updateDeviceSetting,
 	receivedMessage, localStorageService, Base64,
 	messageManager) {
 
@@ -10,9 +10,7 @@ angular.module('findDeviceApp')
     // For testing purpose, set the passkey manually
     var passkey = Base64.encode('myPassKey');
     localStorageService.add('fduser.passkey', passkey);
-
-    function init() {
-
+    
 	/*
 	 * System Event Handler, used to listen to any incoming text messages
 	 * and will issue a command upon the text message being received 
@@ -21,18 +19,40 @@ angular.module('findDeviceApp')
 	navigator.mozSetMessageHandler('sms-received', function onSMS(sms) {
 	    receivedMessage.testMessageReceived(sms);
 	});
-	
+
+    function init() {
+
+	/*
+	 * Set the scope
+	 */
+
+/*
+	if(!$scope.alert){
+	    var $alert = {
+		type: '',
+		status: true,
+		timestamp: '',
+		sender: '',
+		class: 'alert-error'
+	    };
+	}
+*/	
+
+	//$scope.alert = $alert;
+	console.log($scope.alert);
+
+
 	/*
 	 * Load the GPS coordinates for the device
-
-	 geolocation.getCurrentPosition().then(function(position) {
-	 console.log('FOUND! The geolocation of the device.');
-	 console.log(position);
-	 $scope.position = position;
-	 }, function(error) {
-	 console.log('ERROR Getting geolocation of the device: ' + error);
-	 });
-	 */
+	 
+	geolocation.getCurrentPosition().then(function(position) {
+	    console.log('FOUND! The geolocation of the device.');
+	    console.log(position);
+	    $scope.position = position;
+	}, function(error) {
+	    console.log('ERROR Getting geolocation of the device: ' + error);
+	});
+	*/
 
     }
 
@@ -54,10 +74,24 @@ angular.module('findDeviceApp')
 	};
 
 	receivedMessage.testMessageReceived(sms);
-	
-	console.log('---- SCOPE ----');
-	console.log($rootScope);
-	console.log('---- SCOPE ----');
+
+    };
+    
+    /*
+     * Test Commands 
+     */
+    $scope.stopTracking = function() {
+	console.log('-------------------------');
+	console.log('TEST: Stop Tracking SMS');
+	console.log('-------------------------');
+
+	var sms = {
+	    sender: '+491793509165',
+	    body: 'found you myPassKey',
+	    timestamp: new Date().getTime()
+	};
+
+	receivedMessage.testMessageReceived(sms);
 
     };
 

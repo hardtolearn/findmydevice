@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('findDeviceApp').service('messageCommands', function($rootScope, $window,
-	$timeout, activateSettings, messageManager, geolocation) {
+angular.module('findDeviceApp').factory('messageCommands', function($rootScope, $window,
+	$timeout, $filter, activateSettings, geolocation, messageManager) {
 
     return {
-	callCommand: function(cmd, sender) {
+	callCommand: function(cmd, sms) {
 	    console.log('------ CMD -------');
 	    console.log('Look for command: ' + cmd);
 
@@ -12,7 +12,7 @@ angular.module('findDeviceApp').service('messageCommands', function($rootScope, 
 
 		case 'lost':
 		    console.log('Command - Lost: Message asks for Start Tracking');
-		    this.startTracking(sender);
+		    this.startTracking(sms);
 		    break;
 		case 'found':
 		    console.log('Command - Found: Message asks for Stop Tracking');
@@ -37,19 +37,26 @@ angular.module('findDeviceApp').service('messageCommands', function($rootScope, 
 	    }
 
 	},
-	startTracking: function(sender) {
-	    $window.alert('Will start tarcking the device');
-	    
+	startTracking: function(sms) {
+    
 	    // ---
 	    // Set the device as missing
-	    // ---
-	    
-	    // Pass a flag up to the main controller to mark the device as missing
-	    $rootScope.$emit('TRACK ALERT');
-	    
+	    // ---   
 
 	    console.log('------- START TRACKING ---------');
-	    console.log('Sender of message: ' + sender);
+	    console.log('Sender of message: ' + sms.sender);
+	    
+	    var $alert = {
+		status: true,
+		type: 'lost',
+		class: 'alert-error',
+		timestamp: $filter('date')(sms.timestamp, ['medium']),
+		sender: sms.sender
+		
+	    };
+	    	    
+	    $rootScope.alert = $alert;
+	    console.log($alert);
 
 	    var deviceLocation = null;
 
@@ -75,6 +82,7 @@ angular.module('findDeviceApp').service('messageCommands', function($rootScope, 
 		    console.log('FOUND! The geolocation of the device.');
 		    console.log(position);
 		    deviceLocation = position;
+		    $rootScope.position = position;
 		}, function(error) {
 		    console.log('ERROR Getting geolocation of the device: ' + error);
 		});
@@ -87,13 +95,14 @@ angular.module('findDeviceApp').service('messageCommands', function($rootScope, 
 	    // Start sending messages to the user, 
 	    // reporting the location of the device
 	    // ----
+	    
 	    $timeout(function() {
 		console.log('REPLY ---------');
 
 		console.log('Now it is time to message the Sender back');
 		var message = 'MessageCommand - Your phone is lost. Please wait while we find it!';
 
-		var promise = messageManager.sendMessage(sender, message);
+		var promise = messageManager.sendMessage(sms.sender, message);
 
 		promise.then(function(status) {
 		    console.log('SMS has been: ' + status);
@@ -105,9 +114,23 @@ angular.module('findDeviceApp').service('messageCommands', function($rootScope, 
 		// Using a timer to allow for the geo location to be found, 
 		// allowing for more accurate information to be sent to the user
 	    }, 6000);
-
+	    
 	},
 	stopTracking: function() {
+	    
+	    var $alert = {
+		status: false,
+		class: ''
+	    };
+	    
+	    console.log('-- Before --');
+	    console.log($rootScope.alert);
+	    
+	    $rootScope.alert = $alert;
+	    
+	    console.log('-- After --');
+	    console.log($rootScope.alert);
+	    
 	    $window.alert('Stop tracking the device');
 	},
 	lockDevice: function() {

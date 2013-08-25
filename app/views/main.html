@@ -2,8 +2,20 @@
 
     <div class="gap"></div>
 
-    <div class="well alert-error">
-	<h3>Find My Device</h3>
+    <div class="well {{alert.class}}">
+	
+	<div data-ng-hide="alert.status">
+	    <h3>Find My Device</h3>
+	</div>
+	
+	<div data-ng-hide="!alert.status">
+	    <h3>Device is lost</h3>
+	    <p>Status: {{alert.status}}</p>
+	    <p>Sender: {{alert.sender}}</p>
+	    <p>Time Stamp: {{alert.timestamp}}</p>
+	    <p>Class: {{alert.class}}</p>
+	</div>
+	
     </div>
 
     <h3>Location</h3>
@@ -15,7 +27,8 @@
 
     <h3>Messages</h3>
 
-    <p><button type="submit" class="btn" data-ng-click="testMsg()">Test Receive Message</button></p>
+    <p><button type="submit" class="btn" data-ng-click="testMsg()">Test Start Alert Message</button></p>
+    <p><button type="submit" class="btn" data-ng-click="stopTracking()">Test Stop Alert Message</button></p>
     <p><button type="submit" class="btn" data-ng-click="sendSMS()">Send Message</button></p>
 
     <h3>Settings</h3>

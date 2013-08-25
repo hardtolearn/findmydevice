@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('findDeviceApp').service('messageManager', function($q, $window, $timeout, Base64, localStorageService) {
+angular.module('findDeviceApp').factory('messageManager', function($q, $timeout, Base64, localStorageService) {
 
     return {
 	/*
@@ -24,14 +24,12 @@ angular.module('findDeviceApp').service('messageManager', function($q, $window, 
 		request.onsuccess = function onSuccess(event) {
 		    var status = 'request.onsuccess: Message - on delivery succes';
 		    console.log(event);
-		    $window.alert(status);
 		    deferred.resolve(true);
 		};
 
 		request.onerror = function onError(event) {
 		    var status = 'request.onerror: Message - failed to send';
 		    console.log(status);
-		    $window.alert(status);
 		    deferred.reject('Unable to get setting' + event);
 		};
 
@@ -67,7 +65,6 @@ angular.module('findDeviceApp').service('messageManager', function($q, $window, 
 		console.log('The is the correct passkey: ' + msgPasskey);
 		deferred.resolve({valid: true, key: msgPasskey});
 	    } else {
-		// Can ignore this message
 		console.log('Error - not the right passkey');
 		deferred.reject(false);
 	    }
@@ -113,7 +110,7 @@ angular.module('findDeviceApp').service('messageManager', function($q, $window, 
 
 	    // Trim the message of any white space
 	    phase = phase.trim();
-
+	    
 	    // Loop through the array to determine if the message contains any commands
 	    for (var i = 0; i < cmd.length; i++) {
 
@@ -128,7 +125,7 @@ angular.module('findDeviceApp').service('messageManager', function($q, $window, 
 		// so using regular expression's .match() provides a safer string comparision 
 		// if(cmd[i]['key'].toLowerCase() === phase.toLowerCase()){}
 	    }
-
+	    
 	    // Return an empty error 
 	    deferred.reject('There is no command');
 
