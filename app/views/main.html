@@ -5,15 +5,13 @@
     <div class="well {{alert.class}}">
 	
 	<div data-ng-hide="alert.status">
-	    <h3>Find My Device</h3>
+	    <h3>Find My Phone</h3>
 	</div>
 	
 	<div data-ng-hide="!alert.status">
 	    <h3>Device is lost</h3>
-	    <p>Status: {{alert.status}}</p>
 	    <p>Sender: {{alert.sender}}</p>
 	    <p>Time Stamp: {{alert.timestamp}}</p>
-	    <p>Class: {{alert.class}}</p>
 	</div>
 	
     </div>

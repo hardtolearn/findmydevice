@@ -1,0 +1,46 @@
+<div>
+
+    <form name="createForm">
+	
+	<h3>Settings</h3>
+
+	<div class="modal-body">
+
+	    <div class="control-group">
+		<label class="control-label" for="lostCmd">Lost Command</label>
+		<div class="controls">
+		    <input type="text" id="lostCmd" name="lostCmd" placeholder="Lost Command" class="input-medium" data-ng-model="settings.lostCmd" pattern="[a-zA-Z0-9 ]{4,}" title="Minimum 4 letters of numbers." data-ng-minlength="4" data-ng-maxlength="20" data-ng-pattern="/^[A-Za-z0-9 ]*$/" required autofocus />
+		    <span class="help-block" data-ng-show="createForm.lostCmd.$error.required && createForm.lostCmd.$dirty">required</span>
+		    <span class="help-block" data-ng-show="!createForm.lostCmd.$error.required && (createForm.lostCmd.$error.minlength || createForm.lostCmd.$error.maxlength) && createForm.lostCmd.$dirty">Invalid command</span>
+		    
+		</div>
+	    </div>
+
+	    <div class="control-group">
+		<label class="control-label" for="foundCmd">Found Command</label>
+		<div class="controls">
+		    <input type="text" id="foundCmd" name="foundCmd" placeholder="Found Command" value="old value" class="input-medium" data-ng-model="settings.foundCmd" pattern="[a-zA-Z0-9 ]{4,}" title="Minimum 4 letters of numbers." data-ng-minlength="4" data-ng-maxlength="20" data-ng-pattern="/^[A-z][A-z0-9 ]*$/" required />
+		    <span class="help-block" data-ng-show="createForm.foundCmd.$error.required && createForm.foundCmd.$dirty">required</span>
+		    <span class="help-block" data-ng-show="!createForm.foundCmd.$error.required && createForm.foundCmd.$error.foundCmd && createForm.foundCmd.$dirty">Invalid command</span>
+		</div>
+	    </div>
+
+	    <div class="control-group">
+		<label class="control-label" for="password">Passkey</label>
+		<div class="controls">
+		    <input type="text" id="password" name="password" data-ng-model="settings.passkey" data-ng-minlength="6" data-ng-maxlength="20" data-ng-pattern="/^[A-z][A-z0-9]*$/" pattern="[a-zA-Z0-9]{6,}" title="A minimum of 6 characters" placeholder="Passkey"  />
+		    <span class="help-block" data-ng-show="createForm.password.$error.required && createForm.password.$dirty">required</span>
+		    <span class="help-block" data-ng-show="!createForm.password.$error.required && (createForm.password.$error.minlength || createForm.password.$error.maxlength) && createForm.password.$dirty">Passkey must be between 6 and 20 characters.</span>
+		    <span class="help-block" data-ng-show="!createForm.password.$error.required && !createForm.password.$error.minlength && !createForm.password.$error.maxlength && createForm.password.$error.pattern && createForm.password.$dirty">Must contain only letter and numbers(No white spaces)</span>
+		</div>
+	    </div>
+	    <div class="controls">
+		<button type="submit" class="btn" data-ng-click="save(settings)" data-ng-disabled="!createForm.$valid">Save</button>
+	    </div>
+
+	</div>
+
+    </form>
+
+
+</div>

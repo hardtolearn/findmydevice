@@ -1,6 +1,8 @@
 /*
  * Script is from:
  * http://wemadeyoulook.at/blogg/implementing-basic-http-authentication-http-requests-angular/
+ * 
+ * Basic encryption. Will need to replace this script later with something a bit more powerful
  */
 
 'use strict';

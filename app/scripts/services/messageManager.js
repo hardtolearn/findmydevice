@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('findDeviceApp').factory('messageManager', function($q, $timeout, Base64, localStorageService) {
+angular.module('findDeviceApp').factory('messageManager', function($q, $timeout, $window, Base64, localStorageService, userSettings) {
 
     return {
 	/*
@@ -12,17 +12,23 @@ angular.module('findDeviceApp').factory('messageManager', function($q, $timeout,
 	 * @returns {@exp;deferred@pro;promise}
 	 */
 	sendMessage: function(receiver, message) {
+	    
+	    // DEBUG
+	    // manually setting where the SMS are sent
+	    // receiver = '+491604891673';
 
 	    var deferred = $q.defer();
 	    var sMM = window.navigator.mozMobileMessage;
 	    var request;
 
+	    //$window.alert('Send a SMS: ' + receiver + ' \nMessage: \n' + message);
 	    request = sMM.send(receiver, message);
 
 	    $timeout(function() {
 
 		request.onsuccess = function onSuccess(event) {
 		    var status = 'request.onsuccess: Message - on delivery succes';
+		    console.log(status);
 		    console.log(event);
 		    deferred.resolve(true);
 		};
@@ -46,11 +52,13 @@ angular.module('findDeviceApp').factory('messageManager', function($q, $timeout,
 	 * @returns {undefined}
 	 */
 	validateMessage: function(message) {
+	    
+//	    $window.alert('Message Manager - validate Message');
 
 	    var deferred = $q.defer();
 
 	    // Get the keypass that the user saved
-	    var passkey = localStorageService.get('fduser.passkey');
+	    var passkey = localStorageService.get('userSettings.passkey');
 
 	    // Clean the white space around the message
 	    message = message.trim();
@@ -62,32 +70,42 @@ angular.module('findDeviceApp').factory('messageManager', function($q, $timeout,
 	    var msgPasskey = list.pop();
 	    // Check to see if the Passkey in the message matches the saved Passkey
 	    if ((Base64.encode(msgPasskey)) === passkey) {
+		$timeout(function() {
+//		$window.alert('Message contains the correct Passkey');
 		console.log('The is the correct passkey: ' + msgPasskey);
-		deferred.resolve({valid: true, key: msgPasskey});
+		//deferred.resolve({valid: true, key: msgPasskey});
+		deferred.resolve(true);
+		}, 1000);
 	    } else {
+//		$window.alert('Passkey is incorrect');
 		console.log('Error - not the right passkey');
 		deferred.reject(false);
 	    }
+	    
+//	    $window.alert('Finish message manager: validate message');
 
 	    return deferred.promise;
 
 	},
 	findMsgCommand: function(message, passkey) {
+    
+//	    $window.alert('Trying to find the command in the message');
 
 	    var deferred = $q.defer();
 
 	    // Create an array with the commands for the appropriate functions
 	    var cmd = [];
 	    var command = null;
+	    var cmdArray = userSettings.getCommands();
 
 	    cmd.push({
 		type: 'lost',
-		key: 'find me'
+		key:  cmdArray.lostCmd
 	    });
 
 	    cmd.push({
 		type: 'found',
-		key: 'found you'
+		key: cmdArray.foundCmd
 	    });
 
 	    cmd.push({
@@ -117,17 +135,26 @@ angular.module('findDeviceApp').factory('messageManager', function($q, $timeout,
 		if (phase.match(cmd[i].key)) {
 		    console.log('FOUND the command. Phase is: "' + phase + '"');
 		    command = cmd[i].type;
+//		    $window.alert('FOUND the command in the message. Command is :' + command);
 		    deferred.resolve(command);
 		    break;
 		}
+		
+		console.log('command is: ' + phase + ' - searching for: ' + cmd[i].key);
 
 		// Whilst this option might be better, it may have issues in different languages,
 		// so using regular expression's .match() provides a safer string comparision 
 		// if(cmd[i]['key'].toLowerCase() === phase.toLowerCase()){}
 	    }
 	    
-	    // Return an empty error 
-	    deferred.reject('There is no command');
+	    if(!command){
+//		$window.alert('There is no valid command');
+
+		// Return an empty error 
+		deferred.reject('There is no command');
+	    }
+	    
+//	    $window.alert('End of message manager: find msg command');
 
 	    return deferred.promise;
 	}

@@ -1,3 +1,8 @@
+/*
+ * An automatic process that will turn on the Wifi, Geolocation and Mobile Data
+ * once the device has been reported as missing. This will allow for more 
+ * accurate GPS location in the report send back to the user. 
+ */
 'use strict';
 
 angular.module('findDeviceApp').factory('activateSettings', function($q, $timeout, updateDeviceSetting) {
@@ -10,47 +15,42 @@ angular.module('findDeviceApp').factory('activateSettings', function($q, $timeou
 
 	var deferred = $q.defer();
 
-	// Turn on Geolocation 
-	var g = 'geolocation.enabled';
 	var geo = null;
+	var wifi = null;
+	var mData = null;
 
+	// Turn on Geolocation 
 	updateDeviceSetting.enableSetting('geolocation.enabled').then(function(status) {
 	    geo = status;
-	    console.log('SETTING : ' + g + ': ' + status);
 	}, function(error) {
-	    console.log('error getting setting status ' + error);
-	    deferred.reject('Unable to update: ' + g);
+	    deferred.reject('Error updating the status of Geolocation: ' + error);
 	});
 
 	// Turn on Wifi
-	var w = 'wifi.enabled';
-	var wifi = null;
-
 	updateDeviceSetting.enableSetting('wifi.enabled').then(function(status) {
 	    wifi = status;
-	    console.log('SETTING : ' + w + ': ' + status);
 	}, function(error) {
-	    console.log('error getting setting status ' + error);
-	    deferred.reject('Unable to update: ' + w);
+	    deferred.reject('Error updating the status of Wifi: ' + error);
 	});
 
 	// Turn on Mobile Data
-	var m = 'ril.data.enabled';
-	var mData = null;
-
 	updateDeviceSetting.enableSetting('ril.data.enabled').then(function(status) {
 	    mData = status;
-	    console.log('SETTING : ' + m + ': ' + status);
 	}, function(error) {
-	    console.log('error getting setting status ' + error);
-	    deferred.reject('Unable to update: ' + m);
+	    deferred.reject('Error updating the status of Mobile Data: ' + error);
 	});
 
 	// TO DO:
 	// Check to see if Roaming needs to be turned on
+	// Need to create a settin first to see if the user approves of roaming
+	// being activated, then enable the setting.
 
+	// Wrap the promise in a timer, to ensure that all the functions are correctly
+	// instigated before we return the promise. 
 	$timeout(function() {
 	    deferred.resolve([
+		// Need to create an array to be able to pass through all the
+		// values throuh a promise.
 		{key: 'geo', value: geo},
 		{key: 'wifi', value: wifi},
 		{key: 'mData', value: mData}
@@ -60,7 +60,8 @@ angular.module('findDeviceApp').factory('activateSettings', function($q, $timeou
 	return deferred.promise;
 
     };
-
+    
+    // Create a easy to call method in the parent factory
     return {
 	activateTrackingSettings: activateTrackingSettings
     };

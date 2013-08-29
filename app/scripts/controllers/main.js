@@ -1,58 +1,38 @@
 'use strict';
 
 angular.module('findDeviceApp')
-	// geolocation
 	.controller('MainCtrl', function($scope, $window, updateDeviceSetting,
 	receivedMessage, localStorageService, Base64,
 	messageManager) {
 
 
     // For testing purpose, set the passkey manually
-    var passkey = Base64.encode('myPassKey');
-    localStorageService.add('fduser.passkey', passkey);
     
-	/*
-	 * System Event Handler, used to listen to any incoming text messages
-	 * and will issue a command upon the text message being received 
-	 * by the device 
-	 */
-	navigator.mozSetMessageHandler('sms-received', function onSMS(sms) {
-	    receivedMessage.testMessageReceived(sms);
-	});
+    var passkey = Base64.encode('myPassKey');
+    localStorageService.add('userSettings.passkey', passkey);
+
+    /*
+     * System Event Handler, used to listen to any incoming text messages
+     * and will issue a command upon the text message being received 
+     * by the device 
+     */
+    navigator.mozSetMessageHandler('sms-received', function onSMS(sms) {
+	receivedMessage.testMessageReceived(sms);
+    });
 
     function init() {
 
 	/*
-	 * Set the scope
-	 */
-
-/*
-	if(!$scope.alert){
-	    var $alert = {
-		type: '',
-		status: true,
-		timestamp: '',
-		sender: '',
-		class: 'alert-error'
-	    };
-	}
-*/	
-
-	//$scope.alert = $alert;
-	console.log($scope.alert);
-
-
-	/*
 	 * Load the GPS coordinates for the device
 	 
-	geolocation.getCurrentPosition().then(function(position) {
-	    console.log('FOUND! The geolocation of the device.');
-	    console.log(position);
-	    $scope.position = position;
-	}, function(error) {
-	    console.log('ERROR Getting geolocation of the device: ' + error);
-	});
-	*/
+	 geolocation.getCurrentPosition().then(function(position) {
+	 console.log('FOUND! The geolocation of the device.');
+	 console.log(position);
+	 $scope.position = position;
+	 }, function(error) {
+	 console.log('ERROR Getting geolocation of the device: ' + error);
+	 });
+	 */
 
     }
 
@@ -76,7 +56,7 @@ angular.module('findDeviceApp')
 	receivedMessage.testMessageReceived(sms);
 
     };
-    
+
     /*
      * Test Commands 
      */

@@ -4,30 +4,53 @@ angular.module('findDeviceApp').factory('messageCommands', function($rootScope, 
 	$timeout, $filter, activateSettings, geolocation, messageManager) {
 
     return {
-	callCommand: function(cmd, sms) {
-	    console.log('------ CMD -------');
-	    console.log('Look for command: ' + cmd);
+	
+	/*
+	 * Check to see which function should be runned when the command is called
+	 *  
+	 * @param {type} cmd
+	 * @param {type} sms
+	 * @returns {undefined}
+	 */callCommand: function(cmd, sms) {
 
 	    switch (cmd) {
 
+		// If the device is marked as lost...
+		// This will get the device's geolocation and send it back
+		// to the person to triggered the device as lost
 		case 'lost':
-		    console.log('Command - Lost: Message asks for Start Tracking');
 		    this.startTracking(sms);
 		    break;
+		    
+		// If the device is found
 		case 'found':
-		    console.log('Command - Found: Message asks for Stop Tracking');
 		    this.stopTracking();
 		    break;
+		
+		// TO DO:
+		// Lock the device so no one can use it without the password
 		case 'lock':
-		    console.log('Command - Lock: Message asks for Start Tracking');
 		    this.lockDevice();
 		    break;
-		case 'alert':
-		    console.log('Command - Alert: Message asks for Start Tracking');
+		    
+		 // TO DO:
+		 // Sound a loud alarm, ensuring the device can be heard even
+		 // if it's on silent mode
+		 case 'alarm':
+		     this.soundAlarm();
+		     break;
+		
+		 // TO DO:
+		 // Display an custom message on the lock screen to alert anyone
+		 // using the phone that the device is lost or stolen, and how
+		 // to contact the owner
+		 case 'alert':
 		    this.setAlert();
 		    break;
+		    
+		// TO DO:
+		// Wipe the device clean
 		case 'wipe':
-		    console.log('Command - Wipe: Message asks for Start Tracking');
 		    this.wipeDevice();
 		    break;
 
@@ -37,104 +60,115 @@ angular.module('findDeviceApp').factory('messageCommands', function($rootScope, 
 	    }
 
 	},
+	// Start tracking the phone
 	startTracking: function(sms) {
     
-	    // ---
-	    // Set the device as missing
-	    // ---   
-
-	    console.log('------- START TRACKING ---------');
-	    console.log('Sender of message: ' + sms.sender);
-	    
+	    // Pass an alert up the scope to display on the home page
+	    // that the device is currently missing. Display information
+	    // about the report, including timestamp and who isssued the command
 	    var $alert = {
 		status: true,
 		type: 'lost',
 		class: 'alert-error',
 		timestamp: $filter('date')(sms.timestamp, ['medium']),
 		sender: sms.sender
-		
 	    };
-	    	    
+
 	    $rootScope.alert = $alert;
-	    console.log($alert);
 
-	    var deviceLocation = null;
-
-	    // ---
-	    // Turn on all the settings needed to track the device
-	    // ----
+	    // Turn on all the settings that are needed to track the device
 	    activateSettings.activateTrackingSettings().then(function(messages) {
-		console.log('activate settings...');
 		console.log(messages);
 	    }, function(error) {
 		console.log('ERROR turning on settings for tracking: ' + error);
 	    });
 
-
-	    // ---
-	    // Start tracking the device, and find the Geolocation
-	    // ----
+	    // Start tracking the device, which is wrappe in a timeout funtion, 
+	    // allowing the geolocation and other settings to be fully activated
+	    // before the search for the Geolocation starts
 	    $timeout(function() {
-		console.log('GEO ---------');
-		console.log('Find the devices location');
+		var googleMapLink = '';
+		var message = '';
 
+		// Get the current location of the device, and pass this 
+		// information through variable 'position'
 		geolocation.getCurrentPosition().then(function(position) {
-		    console.log('FOUND! The geolocation of the device.');
-		    console.log(position);
-		    deviceLocation = position;
+		    
+		    // Update the location of the device on the main page for testing purposes
 		    $rootScope.position = position;
+
+		    // Send a message out to the sender, notifying them of 
+		    // the device's loation. Include a link to Google Maps with the
+		    // lat and long information. 
+		    googleMapLink = 'http://maps.google.com/?q=' + position.coords.latitude + ',' + position.coords.longitude;
+		    message = 'We have located your device, ' + googleMapLink +
+			    '\n(Time: ' + $filter('date')(position.timestamp, ['medium']) + ', ' +
+			    'Accuracy: ' + position.coords.accuracy + 'm)';
+		    
+		    // Send the geolocation information to the person who triggered this command
+		    var promise = messageManager.sendMessage(sms.sender, message);
+		    promise.then(function(status) {
+			console.log('SMS with Geolocation has been: ' + status);
+		    }, function(error) {
+			console.log('Error sending SMS with Geolocation: ' + error);
+		    });
+
 		}, function(error) {
-		    console.log('ERROR Getting geolocation of the device: ' + error);
+		    
+		    // Inform the sender that the geolocation of the device 
+		    // was unable to be found
+		    message = 'We are unable to track the device, please wait a bit and try again';
+		    
+		    var promise = messageManager.sendMessage(sms.sender, message);
+		    promise.then(function(status) {
+			console.log('SMS has been: ' + status);
+		    }, function(error) {
+			console.log('Error sending SMS: ' + error);
+		    });
+		    
+		    // TO DO: 
+		    // Report the issue of not being able to get the geolocation
+		    console.log('Unable to load the device\'s location (' + error + ')');
+
 		});
-	    }, 2000);
 
-	    // TO DO 
-	    // Set global variable of tracking to on
+	    }, 4000);
 
-	    // ---
-	    // Start sending messages to the user, 
-	    // reporting the location of the device
-	    // ----
-	    
-	    $timeout(function() {
-		console.log('REPLY ---------');
+	    /*
+	     * This will run the following code every 6 seconds,
+	     * until the cancelInterval functoin is called. 
+	     * The idea of this method will be to keep calling the function
+	     * to get the location of the device, until the GPS is found,
+	     * then send a message to the Sender. 
+	     *	     
+	     var interval = setInterval(function() {
+	     findDevice(interval, sms)
+	     }, '6000');
+	     */
 
-		console.log('Now it is time to message the Sender back');
-		var message = 'MessageCommand - Your phone is lost. Please wait while we find it!';
-
-		var promise = messageManager.sendMessage(sms.sender, message);
-
-		promise.then(function(status) {
-		    console.log('SMS has been: ' + status);
-		    $window.alert('Promise: SMS has been: ' + status);
-		}, function(error) {
-		    console.log('Error sending SMS: ' + error);
-		    $window.alert('Error trying to send SMS ' + error);
-		});
-		// Using a timer to allow for the geo location to be found, 
-		// allowing for more accurate information to be sent to the user
-	    }, 6000);
-	    
 	},
 	stopTracking: function() {
-	    
+
 	    var $alert = {
 		status: false,
 		class: ''
 	    };
-	    
+
 	    console.log('-- Before --');
 	    console.log($rootScope.alert);
-	    
+
 	    $rootScope.alert = $alert;
-	    
+
 	    console.log('-- After --');
 	    console.log($rootScope.alert);
-	    
+
 	    $window.alert('Stop tracking the device');
 	},
 	lockDevice: function() {
 	    $window.alert('Lock the device so no one else can use it');
+	},
+	soundAlarm: function(){
+	    $window.alert('Sound a really loud alarm / audio file');
 	},
 	setAlert: function() {
 	    $window.alert('This device is missing! Please hand it into the police');
