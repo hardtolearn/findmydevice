@@ -1,51 +1,53 @@
+/*
+ * When a message has been send to the device, it will disect the message
+ * to see if it contains both the passkey to authenticate the message,
+ * and the command to run a function
+ */
+
 'use strict';
 
-angular.module('findDeviceApp').factory('receivedMessage', function($window, $filter, messageCommands, messageManager) {
+angular.module('findDeviceApp').factory('receivedMessage', function(messageCommands, messageManager) {
 
     return {
-	testMessageReceived: function(sms) {
+	/*
+	 * Scan a message to see if it contains the passkey and any commands
+	 * 
+	 * @param {type} sms
+	 * @returns none
+	 */
+	scanMessageReceived: function(sms) {
 	    
-	    console.log(sms);
-
-//	    var validMsg = false;
+	    var validMsg = false;
 	    var passkey = null;
 
-	    // Get the important information from the SMS, 
-	    var sender = sms.sender;
+	    // Get the important information from the SMS
 	    var body = sms.body;
-	    var timestamp = sms.timestamp;
+	    // var sender = sms.sender;
+	    // var timestamp = sms.timestamp;
 	    // timestamp = $filter('date')(timestamp, ['medium']);
-
-	    // Display message
 	   
-	    // ---
 	    // Check to see the message is valid, and contains the passkey
-	    // ---    
-	    
-	    // !!!!!!!!!!!!!!
-	    // TO DO - 
-	    // ensure the passkey is passed through, not manually written
-	    messageManager.validateMessage(body).then(function(validMsg) {
+	    messageManager.validateMessage(body).then(function(v) {
 		
 		// Return the values from the validate message function
-//		validMsg = v.valid;
-//		passkey = v.key;
-		passkey = 'myPassKey';
-		
+		validMsg = v.valid;
+		passkey = v.key;
 		
 		// If the message is valid...
 		if (validMsg) {
+		    
 		    // Check to see if the message contains any commands
 		    messageManager.findMsgCommand(body, passkey).then(function(cmd) {
 			// Run the corrosponding command that is found in the message
 			messageCommands.callCommand(cmd, sms);
-
 		    }, function(reason) {
+			//Display the error why the message command was not found
 			console.log('Error: ' + reason);
 		    });
 		}
 
 	    }, function(reason) {
+		// Display the error why the message was not validated
 		console.log('Error: ' + reason);
 	    });
 

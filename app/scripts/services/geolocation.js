@@ -30,10 +30,10 @@ angular.module('findDeviceApp').factory('geolocation', function($q, $timeout) {
 	    // Currently there is no need to check the altitude for the device,
 	    // however might incorporate this in future milestones
 	    // enableHighAccuracy: true,
-	    
+
 	    // If the GPS is not found within 180 seconds, time out and send an error
 	    timeout: 180000,
-		    // Ensure that the geolocation is up to date, and not cached
+	    // Ensure that the geolocation is up to date, and not cached
 	    maximumAge: 0
 	};
 

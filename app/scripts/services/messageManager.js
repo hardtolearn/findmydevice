@@ -1,60 +1,22 @@
+/*
+ * A list of functions that validate the message as well as search the message
+ * to see if there is any commands within the message.
+ */
 'use strict';
 
-angular.module('findDeviceApp').factory('messageManager', function($q, $timeout, $window, Base64, localStorageService, userSettings) {
+angular.module('findDeviceApp').factory('messageManager', function($q, $timeout, Base64, localStorageService, userSettings) {
 
     return {
-	/*
-	 * Send a SMS Message, and return the message's
-	 * DOMRequest Object if has been sent or not. 
-	 * 
-	 * @param {type} num
-	 * @param {type} message
-	 * @returns {@exp;deferred@pro;promise}
-	 */
-	sendMessage: function(receiver, message) {
-	    
-	    // DEBUG
-	    // manually setting where the SMS are sent
-	    // receiver = '+491604891673';
-
-	    var deferred = $q.defer();
-	    var sMM = window.navigator.mozMobileMessage;
-	    var request;
-
-	    //$window.alert('Send a SMS: ' + receiver + ' \nMessage: \n' + message);
-	    request = sMM.send(receiver, message);
-
-	    $timeout(function() {
-
-		request.onsuccess = function onSuccess(event) {
-		    var status = 'request.onsuccess: Message - on delivery succes';
-		    console.log(status);
-		    console.log(event);
-		    deferred.resolve(true);
-		};
-
-		request.onerror = function onError(event) {
-		    var status = 'request.onerror: Message - failed to send';
-		    console.log(status);
-		    deferred.reject('Unable to get setting' + event);
-		};
-
-	    }, 500);
-
-	    return deferred.promise;
-	},
 	/*
 	 * Check to see if the text mesage contains the passkey to issue
 	 * any commands, or work out of it's a normal text message
 	 *   
 	 * @param {type} sender
 	 * @param {type} message
-	 * @returns {undefined}
+	 * @returns {@exp;deferred@pro;promise}
 	 */
 	validateMessage: function(message) {
 	    
-//	    $window.alert('Message Manager - validate Message');
-
 	    var deferred = $q.defer();
 
 	    // Get the keypass that the user saved
@@ -68,34 +30,40 @@ angular.module('findDeviceApp').factory('messageManager', function($q, $timeout,
 
 	    // Get the last item in the list to determine to the passkey
 	    var msgPasskey = list.pop();
+	    
 	    // Check to see if the Passkey in the message matches the saved Passkey
 	    if ((Base64.encode(msgPasskey)) === passkey) {
+		// By wrapping this in a timeout function, it fixes the bug 
+		// where the device wasn't able to sync the response up with
+		// the parent function. 
 		$timeout(function() {
-//		$window.alert('Message contains the correct Passkey');
-		console.log('The is the correct passkey: ' + msgPasskey);
-		//deferred.resolve({valid: true, key: msgPasskey});
-		deferred.resolve(true);
+		    deferred.resolve({valid: true, key: msgPasskey});
 		}, 1000);
 	    } else {
-//		$window.alert('Passkey is incorrect');
-		console.log('Error - not the right passkey');
+		// The paskey is not a match
 		deferred.reject(false);
 	    }
-	    
-//	    $window.alert('Finish message manager: validate message');
 
 	    return deferred.promise;
 
 	},
+	/*
+	 * Check to see if the text mesage contains the passkey to issue
+	 * any commands, or work out of it's a normal text message
+	 *   
+	 * @param {type} message
+	 * @param {type} passkey
+	 * @returns {@exp;deferred@pro;promise}
+	 */
 	findMsgCommand: function(message, passkey) {
     
-//	    $window.alert('Trying to find the command in the message');
-
 	    var deferred = $q.defer();
 
 	    // Create an array with the commands for the appropriate functions
 	    var cmd = [];
 	    var command = null;
+	    
+	    // Get a list of keys that the user has manually set 
 	    var cmdArray = userSettings.getCommands();
 
 	    cmd.push({
@@ -108,6 +76,8 @@ angular.module('findDeviceApp').factory('messageManager', function($q, $timeout,
 		key: cmdArray.foundCmd
 	    });
 
+	    // TO DO:
+	    // Allow the user to manually set the keys for the following commands
 	    cmd.push({
 		type: 'lock',
 		key: 'lock me'
@@ -123,7 +93,8 @@ angular.module('findDeviceApp').factory('messageManager', function($q, $timeout,
 		key: 'self distract'
 	    });
 
-	    // Delete the keyphase from the message
+	    // Delete the keyphase from the message, 
+	    // making it easier to search for the command key
 	    var phase = message.substring(0, message.indexOf(passkey));
 
 	    // Trim the message of any white space
@@ -132,29 +103,23 @@ angular.module('findDeviceApp').factory('messageManager', function($q, $timeout,
 	    // Loop through the array to determine if the message contains any commands
 	    for (var i = 0; i < cmd.length; i++) {
 
+		// Match allows for a substring to be located in a string, however
+		// it has the issue that the match() is case sensitive
 		if (phase.match(cmd[i].key)) {
-		    console.log('FOUND the command. Phase is: "' + phase + '"');
-		    command = cmd[i].type;
-//		    $window.alert('FOUND the command in the message. Command is :' + command);
-		    deferred.resolve(command);
+		    // Pass the command type to the parent message, and break the loop
+		    deferred.resolve(cmd[i].type);
 		    break;
 		}
 		
-		console.log('command is: ' + phase + ' - searching for: ' + cmd[i].key);
-
 		// Whilst this option might be better, it may have issues in different languages,
 		// so using regular expression's .match() provides a safer string comparision 
 		// if(cmd[i]['key'].toLowerCase() === phase.toLowerCase()){}
 	    }
 	    
+	    // Return an error if there is no commands found
 	    if(!command){
-//		$window.alert('There is no valid command');
-
-		// Return an empty error 
 		deferred.reject('There is no command');
 	    }
-	    
-//	    $window.alert('End of message manager: find msg command');
 
 	    return deferred.promise;
 	}

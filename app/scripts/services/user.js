@@ -1,3 +1,8 @@
+/*
+ * TO DO
+ * Incoporate user accounts into the appliation
+ */
+
 'use strict';
 
 // https://gist.github.com/Mithrandir0x/3639232

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('findDeviceApp').factory('messageCommands', function($rootScope, $window,
-	$timeout, $filter, activateSettings, geolocation, messageManager) {
+	$timeout, $filter, activateSettings, geolocation, messageManager, sendMessage) {
 
     return {
 	
@@ -106,7 +106,7 @@ angular.module('findDeviceApp').factory('messageCommands', function($rootScope, 
 			    'Accuracy: ' + position.coords.accuracy + 'm)';
 		    
 		    // Send the geolocation information to the person who triggered this command
-		    var promise = messageManager.sendMessage(sms.sender, message);
+		    var promise = sendMessage.sendMessage(sms.sender, message);
 		    promise.then(function(status) {
 			console.log('SMS with Geolocation has been: ' + status);
 		    }, function(error) {
@@ -119,7 +119,7 @@ angular.module('findDeviceApp').factory('messageCommands', function($rootScope, 
 		    // was unable to be found
 		    message = 'We are unable to track the device, please wait a bit and try again';
 		    
-		    var promise = messageManager.sendMessage(sms.sender, message);
+		    var promise = sendMessage.sendMessage(sms.sender, message);
 		    promise.then(function(status) {
 			console.log('SMS has been: ' + status);
 		    }, function(error) {
@@ -147,20 +147,18 @@ angular.module('findDeviceApp').factory('messageCommands', function($rootScope, 
 	     */
 
 	},
+	// Disable the tracking of the phone, and set the alert of 
+	// the device back to normal 
 	stopTracking: function() {
-
+	    
+	    // Set the alert back to normal, and pass it back up the scope, 
+	    // to the main page
 	    var $alert = {
 		status: false,
 		class: ''
 	    };
-
-	    console.log('-- Before --');
-	    console.log($rootScope.alert);
-
+	    
 	    $rootScope.alert = $alert;
-
-	    console.log('-- After --');
-	    console.log($rootScope.alert);
 
 	    $window.alert('Stop tracking the device');
 	},

@@ -1,20 +1,20 @@
+/*
+ * A user setting page, that allows the user to set the commands used in text messages
+ * as well as update the passkey
+ */
 'use strict';
 
-angular.module('findDeviceApp').controller('SettingsCtrl', function($scope, userSettings, localStorageService, Base64) {
+angular.module('findDeviceApp').controller('SettingsCtrl', function($scope, userSettings) {
 
-
-
-    console.log('Testing passkey:');
-    var passkey = userSettings.passkey();
-    console.log(passkey);
-
-    console.log('set pass key');
-    var setpasskey = userSettings.setPasskey('myNewPassKey');
-    console.log(setpasskey);
-
+    // Get the list of commands 
     var cmdArray = userSettings.getCommands();
-    console.log(cmdArray);
-
+    
+    /*
+     * Pass the saved commands into the input fields via the $scope method
+     *   
+     * @param {type} $scope
+     * @returns {undefined}
+     */
     function init($scope) {
 	$scope.settings = {};
 	$scope.settings.lostCmd = cmdArray.lostCmd;
@@ -23,22 +23,28 @@ angular.module('findDeviceApp').controller('SettingsCtrl', function($scope, user
 
     init($scope);
 
+    /*
+     * Save the input entered via the user.
+     * Get the input entered into the field's via the $scope.setting array.
+     * And then write it to local storage
+     *  
+     * @param {type} settings
+     */
     $scope.save = function(settings) {
-	console.log(settings.foundCmd);
-	console.log(settings);
 
+	// Save the commands 
+	userSettings.setLostCmd(settings.lostCmd);
+	userSettings.setFoundCmd(settings.foundCmd);
+	
+	// Only save the passkey if the field isn't empty
 	var passkey = settings.passkey;
 	if (passkey) {
-	    passkey = Base64.encode(passkey);
-	    console.log(passkey);
+	    userSettings.setPasskey(passkey);
 	}
-
-	// Save user details 
-	localStorageService.add('fdsettings.lostCmd', settings.lostCmd);
-	localStorageService.add('fdsettings.foundCmd', settings.foundCmd);
-	if (passkey) {
-	    localStorageService.add('fdsettings.passkey', passkey);
-	}
+	
+	// TO DO:
+	// Display an notivation to inform the user that the settings have been saved
+	
 	/*
 	 // Load the User Controller to insert the local storage into the User Object
 	 $location.path( "/login" ); 

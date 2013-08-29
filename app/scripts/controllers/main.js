@@ -1,15 +1,11 @@
+/*
+ * The main user page, allowing for a number of different testing methods
+ */
 'use strict';
 
 angular.module('findDeviceApp')
 	.controller('MainCtrl', function($scope, $window, updateDeviceSetting,
-	receivedMessage, localStorageService, Base64,
-	messageManager) {
-
-
-    // For testing purpose, set the passkey manually
-    
-    var passkey = Base64.encode('myPassKey');
-    localStorageService.add('userSettings.passkey', passkey);
+	receivedMessage, sendMessage) {
 
     /*
      * System Event Handler, used to listen to any incoming text messages
@@ -17,14 +13,16 @@ angular.module('findDeviceApp')
      * by the device 
      */
     navigator.mozSetMessageHandler('sms-received', function onSMS(sms) {
-	receivedMessage.testMessageReceived(sms);
+	receivedMessage.scanMessageReceived(sms);
     });
 
     function init() {
 
 	/*
 	 * Load the GPS coordinates for the device
-	 
+	 */
+	
+	/*
 	 geolocation.getCurrentPosition().then(function(position) {
 	 console.log('FOUND! The geolocation of the device.');
 	 console.log(position);
@@ -38,9 +36,8 @@ angular.module('findDeviceApp')
 
     init();
 
-
     /*
-     * Test Commands 
+     * Test the Lost Phone command 
      */
     $scope.testMsg = function() {
 	console.log('-------------------------');
@@ -48,17 +45,17 @@ angular.module('findDeviceApp')
 	console.log('-------------------------');
 
 	var sms = {
-	    sender: '+491793509165',
+	    sender: '1234',
 	    body: 'will you find me please! myPassKey',
 	    timestamp: new Date().getTime()
 	};
 
-	receivedMessage.testMessageReceived(sms);
+	receivedMessage.scanMessageReceived(sms);
 
     };
 
     /*
-     * Test Commands 
+     * Test the Commands for found the phone
      */
     $scope.stopTracking = function() {
 	console.log('-------------------------');
@@ -66,12 +63,12 @@ angular.module('findDeviceApp')
 	console.log('-------------------------');
 
 	var sms = {
-	    sender: '+491793509165',
+	    sender: '1234',
 	    body: 'found you myPassKey',
 	    timestamp: new Date().getTime()
 	};
 
-	receivedMessage.testMessageReceived(sms);
+	receivedMessage.scanMessageReceived(sms);
 
     };
 
@@ -83,10 +80,10 @@ angular.module('findDeviceApp')
 	console.log('-------------------------');
 	$window.alert('going to send a text message now');
 
-	var receiver = '+491793509165';
+	var receiver = '1234';
 	var message = 'Hello from the app';
 
-	var promise = messageManager.sendMessage(receiver, message);
+	var promise = sendMessage.sendMessage(receiver, message);
 
 	promise.then(function(status) {
 	    console.log('SMS has been: ' + status);
