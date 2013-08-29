@@ -92,7 +92,7 @@ angular.module('findDeviceApp').factory('userSettings', function(Base64, localSt
      * If there is no command saved, use the default command
      * 
      * @return (string) foundCmd
-     */    
+     */
     var getFoundCmd = function() {
 	var foundCmd;
 

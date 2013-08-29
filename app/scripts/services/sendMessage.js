@@ -4,7 +4,7 @@
 
 'use strict';
 
-angular.module('findDeviceApp').factory('sendMessage', function() {
+angular.module('findDeviceApp').factory('sendMessage', function($q, $timeout) {
 
     return {
 	/*
@@ -27,7 +27,8 @@ angular.module('findDeviceApp').factory('sendMessage', function() {
 	    $timeout(function() {
 
 		// If the meesage succuessfully send, pass the confirmation up the chain
-		request.onsuccess = function onSuccess(event) {
+		// function onSuccess(event) {
+		request.onsuccess = function onSuccess() {
 		    // console.log(event);
 		    deferred.resolve(true);
 		};
