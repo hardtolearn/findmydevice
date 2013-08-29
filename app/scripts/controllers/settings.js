@@ -4,10 +4,12 @@
  */
 'use strict';
 
-angular.module('findDeviceApp').controller('SettingsCtrl', function($scope, userSettings) {
+angular.module('findDeviceApp').controller('SettingsCtrl', function($scope, commandSettings) {
 
     // Get the list of commands 
-    var cmdArray = userSettings.getCommands();
+    var cmdArray = commandSettings.getCommands();
+    
+    console.log(cmdArray);
     
     /*
      * Pass the saved commands into the input fields via the $scope method
@@ -17,8 +19,11 @@ angular.module('findDeviceApp').controller('SettingsCtrl', function($scope, user
      */
     function init($scope) {
 	$scope.settings = {};
-	$scope.settings.lostCmd = cmdArray.lostCmd;
-	$scope.settings.foundCmd = cmdArray.foundCmd;
+	$scope.settings.lostCmd = cmdArray.lost.cmd;
+	$scope.settings.foundCmd = cmdArray.found.cmd;
+	$scope.settings.lockCmd = cmdArray.lock.cmd;
+	$scope.settings.alertCmd = cmdArray.alert.cmd;
+	$scope.settings.wipeCmd = cmdArray.wipe.cmd;
     }
 
     init($scope);
@@ -30,16 +35,22 @@ angular.module('findDeviceApp').controller('SettingsCtrl', function($scope, user
      *  
      * @param {type} settings
      */
-    $scope.save = function(settings) {
+    $scope.saveCmd = function(settings) {
 
 	// Save the commands 
-	userSettings.setLostCmd(settings.lostCmd);
-	userSettings.setFoundCmd(settings.foundCmd);
+	commandSettings.setCmd('fdsettings.lostCmd', settings.lostCmd);
+	commandSettings.setCmd('fdsettings.foundCmd', settings.foundCmd);
+	commandSettings.setCmd('fdsettings.lockCmd', settings.lockCmd);
+	commandSettings.setCmd('fdsettings.alertCmd', settings.alertCmd);
+	commandSettings.setCmd('fdsettings.wipeCmd', settings.wipeCmd);
+    };
+    
+    $scope.savePasskey = function(settings) {
 	
 	// Only save the passkey if the field isn't empty
 	var passkey = settings.passkey;
 	if (passkey) {
-	    userSettings.setPasskey(passkey);
+	    commandSettings.setPasskey(passkey);
 	}
 	
 	// TO DO:

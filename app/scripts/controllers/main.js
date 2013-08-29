@@ -13,7 +13,7 @@ angular.module('findDeviceApp')
      * by the device 
      */
     navigator.mozSetMessageHandler('sms-received', function onSMS(sms) {
-	receivedMessage.scanMessageReceived(sms);
+	//receivedMessage.scanMessageReceived(sms);
     });
 
     function init() {

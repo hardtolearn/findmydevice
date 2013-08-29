@@ -42,13 +42,13 @@ angular.module('findDeviceApp').factory('receivedMessage', function(messageComma
 			messageCommands.callCommand(cmd, sms);
 		    }, function(reason) {
 			//Display the error why the message command was not found
-			console.log('Error: ' + reason);
+			console.log('Find Message Command Error: ' + reason);
 		    });
 		}
 
 	    }, function(reason) {
 		// Display the error why the message was not validated
-		console.log('Error: ' + reason);
+		console.log('Validate Message Error: ' + reason);
 	    });
 
 	}

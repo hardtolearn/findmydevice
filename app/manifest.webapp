@@ -31,6 +31,6 @@
 	"audio-channel-notification":{}
     },
     "messages": [
-	 { "sms-received": "/index.html" },
+	 { "sms-received": "/index.html" }
       ]
 }

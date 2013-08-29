@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('findDeviceApp').factory('messageCommands', function($rootScope, $window,
-	$timeout, $filter, activateSettings, geolocation, messageManager, sendMessage) {
+	$timeout, $filter, activateSettings, geolocation, sendMessage) {
 
     return {
 	
