@@ -197,7 +197,6 @@ angular.module('findDeviceApp').factory('commandSettings', function(Base64, loca
      * @return (boolean) localstorage.add() 
      */
     var setCmd = function(storage, cmd) {
-	console.log('saving: ' + storage + ' - ' + cmd);
 	return localStorageService.add(storage, cmd);
     };
 

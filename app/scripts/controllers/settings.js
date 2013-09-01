@@ -6,10 +6,8 @@
 
 angular.module('findDeviceApp').controller('SettingsCtrl', function($scope, commandSettings) {
 
-    // Get the list of commands 
+    // Get the Object of commands 
     var cmdArray = commandSettings.getCommands();
-    
-    console.log(cmdArray);
     
     /*
      * Pass the saved commands into the input fields via the $scope method
