@@ -9,19 +9,17 @@
  * password to set a form error. 
  */
 
-'use strict';
 
 var userValidation = angular.module('UserValidation', []);
-
-userValidation.directive('validPassword', function() {
+	    
+userValidation.directive('validPasswordC', function () {
     return {
-	require: 'ngModel',
-	link: function(scope, elm, attrs, ctrl) {
-	    ctrl.$parsers.unshift(function(viewValue) {
-		var noMatch = viewValue !== scope.createForm.password.$viewValue;
-		ctrl.$setValidity('noMatch', !noMatch);
-	    });
-	}
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            ctrl.$parsers.unshift(function (viewValue, $scope) {
+                var noMatch = viewValue !== scope.createForm.password.$viewValue;
+                ctrl.$setValidity('noMatch', !noMatch);
+            });
+        }
     };
 });
-

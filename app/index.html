@@ -22,8 +22,11 @@
             <div class="navbar-inner">
               <a class="brand" href="#">Find my Phone</a>
               <ul class="nav">
+		  
                 <li><a href="#">Home</a></li>
-                <li><a href="#/settings">Settings</a></li>
+                <li data-ng-show="(hasUser && !isLoggedin)"><a href="#/login">Login</a></li>
+                <li data-ng-show="!hasUser"><a href="#/register">Register</a></li>
+                <li data-ng-show="isLoggedin"><a href="#/settings">Settings</a></li>
               </ul>
             </div>
         </div>
@@ -66,9 +69,13 @@
         <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
+	<script src="scripts/app.js"></script>
+	<script src="scripts/services/userService.js"></script>
+	
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/settings.js"></script>
+        <script src="scripts/controllers/login.js"></script>
+        <script src="scripts/controllers/register.js"></script>
 
         <script src="scripts/services/geolocation.js"></script>
         <script src="scripts/services/updateDeviceSetting.js"></script>
@@ -80,6 +87,7 @@
         <script src="scripts/services/commandSettings.js"></script>
         <script src="scripts/services/base64.js"></script>
 	<script src="scripts/services/userValidation.js"></script>
+	
         <!-- endbuild -->
     </body>
 </html>

@@ -4,7 +4,7 @@
  */
 'use strict';
 
-angular.module('findDeviceApp').controller('SettingsCtrl', function($scope, commandSettings) {
+angular.module('findDeviceApp').controller('SettingsCtrl', function($scope, UserService, commandSettings) {
 
     // Get the Object of commands 
     var cmdArray = commandSettings.getCommands();

@@ -4,8 +4,20 @@
 'use strict';
 
 angular.module('findDeviceApp')
-	.controller('MainCtrl', function($scope, $window, updateDeviceSetting,
-	receivedMessage, sendMessage) {
+	.controller('MainCtrl', function($scope, $rootScope, $window, UserService, updateDeviceSetting,
+	receivedMessage, sendMessage, localStorageService) {
+
+console.log('user: ' + localStorageService.get('fduser.username'));
+
+    /*
+     * NASTY HACK
+     * Check to see if there is a user in the system already
+     */    
+    if(UserService.hasUser){
+	$rootScope.hasUser = true;
+    } else {
+	$rootScope.hasUser = false;	
+    }
 
     /*
      * System Event Handler, used to listen to any incoming text messages
@@ -13,7 +25,7 @@ angular.module('findDeviceApp')
      * by the device 
      */
     navigator.mozSetMessageHandler('sms-received', function onSMS(sms) {
-	//receivedMessage.scanMessageReceived(sms);
+	receivedMessage.scanMessageReceived(sms);
     });
 
     function init() {

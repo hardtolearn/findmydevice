@@ -1,11 +1,12 @@
 <div>
 
     <div class="gap"></div>
+    
 
     <div class="well {{alert.class}}">
 	
 	<div data-ng-hide="alert.status">
-	    <h3>Find My Phone</h3>
+	    <h3>Phone is fine</h3>
 	</div>
 	
 	<div data-ng-hide="!alert.status">
@@ -15,6 +16,18 @@
 	</div>
 	
     </div>
+    
+    <div data-ng-show="!hasUser">
+	<p>Create an account</p>
+	<a href="#/register" class="btn btn btn-primary btn-large">Register</a> 
+    </div>
+    
+    <div data-ng-show="(hasUser && !isLoggedin)">
+	<p>Please Login</p>
+	<a href="#/login" class="btn btn btn-primary btn-large">Login</a> 
+    </div>
+    
+    <div data-ng-show="(isLoggedin)">
 
     <h3>Location</h3>
 
@@ -42,5 +55,7 @@
     <p><button type="submit" class="btn" data-ng-click="getSettingStatus('ril.data.enabled')">Check the status of Mobile Data</button></p>
     <p><button type="submit" class="btn" data-ng-click="activateSetting('ril.data.enabled')">Turn on Mobile Data</button></p>
     <p><button type="submit" class="btn" data-ng-click="disableSetting('ril.data.enabled')">Turn off Mobile Data</button></p>
+    
+    </div>
 
 </div>
